@@ -1,18 +1,21 @@
+---
 - hosts: webservers
-  become: true
+  become: yes
   become_user: root
   tasks:
-- name: install docker
-  yum: name=docker state=present
-- name: start docker
-  service: name=docker state=started
-- name: install git
-  yum: name=git state=present
-- name: get the dockerfile from dockerhub
-  Docker_image:
-- name: devopsedu/webapp
-- name: build dockerfile
-  command: chdir=/tmp/gitrepo docker build -t deployimage:ansible .
-- name: run the dockerfile
-  command: docker run -itd -P deployimage:ansible-
-
+  - name: install git
+    package:
+     name: git
+     state: present
+  - name: install java
+    package:
+     name: java-1.8.0-openjdk-devel
+     state: present
+  - name: install docker
+    package:
+     name: docker
+     state: present
+  - name : start docker
+    service:
+     name: docker
+     state: started
